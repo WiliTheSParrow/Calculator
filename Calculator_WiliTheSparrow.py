@@ -2,7 +2,6 @@
 # |   HAZI FELADAT   |
 #   -----------------
 
-# Számológép statisztika fileokba lementése: xml, json, pickle, shelve
 # Számológépet felosztani funkciókra, és metódusokra.
 
 from csv import DictWriter, DictReader
@@ -35,6 +34,41 @@ szorzas_masodik_ertek = []
 paros_szamok = 0
 paratlan_szamok = 0
 tiznel_nagyobb_szamok = 0
+
+
+# </editor-fold>
+
+# <editor-fold desc="Fuggvenyek definialasa">
+def osszeadasMuvelete(a, b):
+    osszeadas = a + b
+    osszeadas_kijott_eredmenyek.append(osszeadas)
+    osszead_elso_ertek.append(a)
+    osszeadas_masodik_ertek.append(b)
+    print(str(a), ' + ', str(b), ' = ', str(osszeadas))
+
+
+def kivonasMuvelete(a, b):
+    kivonas = a - b
+    kivonas_kijott_eredmenyek.append(kivonas)
+    kivonas_elso_ertek.append(a)
+    kivonas_masodik_ertek.append(b)
+    print(str(a), ' - ', str(b), ' = ', str(kivonas))
+
+
+def osztasMuvelete(a, b):
+    osztas = a / b
+    osztas_kijott_eredmenyek.append(osztas)
+    osztas_elso_ertek.append(a)
+    osztas_masodik_ertek.append(b)
+    print(str(a), ' / ', str(b), ' = ', str(osztas))
+
+
+def szorzasMuvelete(a, b):
+    szorzas = a * b
+    szorzas_kijott_eredmenyek.append(szorzas)
+    szorzas_elso_ertek.append(a)
+    szorzas_masodik_ertek.append(b)
+    print(str(a), ' * ', str(b), ' = ', str(szorzas))
 # </editor-fold>
 
 # <editor-fold desc="A szamologep">
@@ -50,39 +84,23 @@ while kerdes == 'igen':  # A ciklus addig fut le, amig igenekkel valaszol a felh
     b = int(input("Kerem adja meg a masodik erteket: "))
 
     if muvelet_bekerese == '+':
-        osszeadas = a + b
-        osszeadas_kijott_eredmenyek.append(osszeadas)
+        osszeadasMuvelete(a, b)
         statisztika_osszeadas += 1
-        osszead_elso_ertek.append(a)
-        osszeadas_masodik_ertek.append(b)
-        print(str(a), ' + ', str(b), ' = ', str(osszeadas))
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '-':
-        kivonas = a - b
-        kivonas_kijott_eredmenyek.append(kivonas)
+        kivonasMuvelete(a, b)
         statisztika_kivonas += 1
-        kivonas_elso_ertek.append(a)
-        kivonas_masodik_ertek.append(b)
-        print(str(a), ' - ', str(b), ' = ', str(kivonas))
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '/':
-        osztas = a / b
-        osztas_kijott_eredmenyek.append(osztas)
+        osztasMuvelete(a, b)
         statisztika_osztas += 1
-        osztas_elso_ertek.append(a)
-        osztas_masodik_ertek.append(b)
-        print(str(a), ' / ', str(b), ' = ', str(osztas))
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '*':
-        szorzas = a * b
-        szorzas_kijott_eredmenyek.append(szorzas)
+        szorzasMuvelete(a, b)
         statisztika_szorzas += 1
-        szorzas_elso_ertek.append(a)
-        szorzas_masodik_ertek.append(b)
-        print(str(a), ' * ', str(b), ' = ', str(szorzas))
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
 kerdes2 = input("Szeretne a statisztikai adatokat megjeleniteni (Igen/Nem)? ").lower()
