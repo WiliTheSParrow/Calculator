@@ -10,17 +10,36 @@ import shelve
 
 
 class Szamolas:
-
     statisztika_osszeadas = 0
     osszeadas_kijott_eredmenyek = []
     osszead_elso_ertek = []
     osszeadas_masodik_ertek = []
 
+    statisztika_kivonas = 0
+    kivonas_kijott_eredmenyek = []
+    kivonas_elso_ertek = []
+    kivonas_masodik_ertek = []
+
+    statisztika_osztas = 0
+    osztas_kijott_eredmenyek = []
+    osztas_elso_ertek = []
+    osztas_masodik_ertek = []
+
+    statisztika_szorzas = 0
+    szorzas_kijott_eredmenyek = []
+    szorzas_elso_ertek = []
+    szorzas_masodik_ertek = []
+
+    paros_szamok = 0
+    paratlan_szamok = 0
+    tiznel_nagyobb_szamok = 0
+
     def __init__(self, a, b):
         self.a = a
         self.b = b
 
-    def osszeadas_muvelete(a, b, osszeadas_kijott_eredmenyek, osszead_elso_ertek, osszeadas_masodik_ertek, statisztika_osszeadas):
+    def osszeadas_muvelete(a, b, osszeadas_kijott_eredmenyek, osszead_elso_ertek, osszeadas_masodik_ertek,
+                           statisztika_osszeadas):
         osszeadas = a + b
         osszeadas_kijott_eredmenyek.append(osszeadas)
         osszead_elso_ertek.append(a)
@@ -28,51 +47,31 @@ class Szamolas:
         statisztika_osszeadas += 1
         print(str(a), ' + ', str(b), ' = ', str(osszeadas))
 
-    def kivonas_muvelete(a, b):
+    def kivonas_muvelete(a, b, kivonas_kijott_eredmenyek, kivonas_elso_ertek, kivonas_masodik_ertek,
+                         statisztika_kivonas):
         kivonas = a - b
         kivonas_kijott_eredmenyek.append(kivonas)
         kivonas_elso_ertek.append(a)
         kivonas_masodik_ertek.append(b)
+        statisztika_kivonas += 1
         print(str(a), ' - ', str(b), ' = ', str(kivonas))
 
-    def osztas_muvelete(a, b):
+    def osztas_muvelete(a, b, osztas_kijott_eredmenyek, osztas_elso_ertek, osztas_masodik_ertek, statisztika_osztas):
         osztas = a / b
         osztas_kijott_eredmenyek.append(osztas)
         osztas_elso_ertek.append(a)
         osztas_masodik_ertek.append(b)
+        statisztika_osztas += 1
         print(str(a), ' / ', str(b), ' = ', str(osztas))
 
-    def szorzas_muvelete(a, b):
+    def szorzas_muvelete(a, b, szorzas_kijott_eredmenyek, szorzas_elso_ertek, szorzas_masodik_ertek, statisztika_szorzas):
         szorzas = a * b
         szorzas_kijott_eredmenyek.append(szorzas)
         szorzas_elso_ertek.append(a)
         szorzas_masodik_ertek.append(b)
+        statisztika_szorzas += 1
         print(str(a), ' * ', str(b), ' = ', str(szorzas))
 
-
-
-# <editor-fold desc="Kezdeti ertekek beallitasa a statisztikahoz">
-
-statisztika_kivonas = 0
-kivonas_kijott_eredmenyek = []
-kivonas_elso_ertek = []
-kivonas_masodik_ertek = []
-
-statisztika_osztas = 0
-osztas_kijott_eredmenyek = []
-osztas_elso_ertek = []
-osztas_masodik_ertek = []
-
-statisztika_szorzas = 0
-szorzas_kijott_eredmenyek = []
-szorzas_elso_ertek = []
-szorzas_masodik_ertek = []
-
-paros_szamok = 0
-paratlan_szamok = 0
-tiznel_nagyobb_szamok = 0
-
-# </editor-fold>
 
 # <editor-fold desc="A szamologep">
 
@@ -83,7 +82,8 @@ while kerdes == 'igen':  # A ciklus addig fut le, amig igenekkel valaszol a felh
 
     # Bekerjük a szamokat es a muveletet a felhasznalotol, amikkel szeretne dolgozni:
     muvelet_bekerese = input("Kerem adjon meg egy muveletet (+ / - / / / *): ")
-    megadott_szamok = Szamolas(a=int(input("Kerem adja meg az elso erteket: ")), b=int(input("Kerem adja meg a masodik erteket: ")))
+    megadott_szamok = Szamolas(a=int(input("Kerem adja meg az elso erteket: ")),
+                               b=int(input("Kerem adja meg a masodik erteket: ")))
 
     if muvelet_bekerese == '+':
         osszeadogatok = Szamolas
@@ -94,19 +94,19 @@ while kerdes == 'igen':  # A ciklus addig fut le, amig igenekkel valaszol a felh
     elif muvelet_bekerese == '-':
         kivonogatok = Szamolas
         kivonogatok.kivonas_muvelete(megadott_szamok.a, megadott_szamok.b)
-        statisztika_kivonas += 1
+
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '/':
         osztogatok = Szamolas
         osztogatok.osztas_muvelete(megadott_szamok.a, megadott_szamok.b)
-        statisztika_osztas += 1
+
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '*':
         szorozgatok = Szamolas
         szorozgatok.szorzas_muvelete(megadott_szamok.a, megadott_szamok.b)
-        statisztika_szorzas += 1
+
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
 kerdes2 = input("Szeretne a statisztikai adatokat megjeleniteni (Igen/Nem)? ").lower()
@@ -114,22 +114,22 @@ kerdes2 = input("Szeretne a statisztikai adatokat megjeleniteni (Igen/Nem)? ").l
 # </editor-fold>
 
 # <editor-fold desc="Eredmenyek ertekelese">
-stat_osszeadogatok = Szamolas
-eredmenyek_omlesztve = stat_osszeadogatok.osszeadas_kijott_eredmenyek + kivonas_kijott_eredmenyek + osztas_kijott_eredmenyek + szorzas_kijott_eredmenyek
+stat_szamok = Szamolas
+eredmenyek_omlesztve = stat_szamok.osszeadas_kijott_eredmenyek + stat_szamok.kivonas_kijott_eredmenyek + stat_szamok.osztas_kijott_eredmenyek + stat_szamok.szorzas_kijott_eredmenyek
 
 for i in eredmenyek_omlesztve:  # Mennyi paros vagy paratlan szam volt.
     if i % 2 == 0:
-        paros_szamok += 1
+        stat_szamok.paros_szamok += 1
     else:
-        paratlan_szamok += 1
+        stat_szamok.paratlan_szamok += 1
 
 for i in eredmenyek_omlesztve:  # Mennyi 10-nel nagyobb szam jott ki.
     if i > 10:
-        tiznel_nagyobb_szamok += 1
+        stat_szamok.tiznel_nagyobb_szamok += 1
 # </editor-fold>
 
 # <editor-fold desc="Eredmenyek eltarolasa file-okba">
-stat_adatok = Szamolas
+
 # <editor-fold desc="CSV">
 with open('szamologep.csv', 'w', encoding='utf-8', newline='') as fajl:
     fejlec = [
@@ -156,25 +156,25 @@ with open('szamologep.csv', 'w', encoding='utf-8', newline='') as fajl:
     csvWriter = DictWriter(fajl, fieldnames=fejlec)
     csvWriter.writeheader()
     csvWriter.writerow({
-        "Osszeadas muvelete osszesen": stat_adatok.statisztika_osszeadas,
-        "Osszeadas eredmenye(i)": stat_adatok.osszeadas_kijott_eredmenyek,
-        "Osszeadasnal megadott elso ertek(ek)": stat_adatok.osszead_elso_ertek,
-        "Osszeadasnal megadott masodik ertek(ek)": stat_adatok.osszeadas_masodik_ertek,
-        "Kivonas muvelete osszesen": statisztika_kivonas,
-        "Kivonas eredmenye(i)": kivonas_kijott_eredmenyek,
-        "Kivonasnal megadott elso ertek(ek)": kivonas_elso_ertek,
-        "Kivonasnal megadott masodik ertek(ek)": kivonas_masodik_ertek,
-        "Osztas muvelete osszesen": statisztika_osztas,
-        "Osztas eredmenye(i)": osztas_kijott_eredmenyek,
-        "Osztasnal megadott elso ertek(ek)": osztas_elso_ertek,
-        "Osztasnal megadott masodik ertek(ek)": osztas_masodik_ertek,
-        "Szorzas muvelete osszesen": statisztika_szorzas,
-        "Szorzas eredmenye(i)": szorzas_kijott_eredmenyek,
-        "Szorzasnal megadott elso ertek(ek)": szorzas_elso_ertek,
-        "Szorzasnal megadott masodik ertek(ek)": szorzas_masodik_ertek,
-        "Osszes paros szam": paros_szamok,
-        "Osszes paratlan szam": paratlan_szamok,
-        "Tiznel nagyobb szamok": tiznel_nagyobb_szamok
+        "Osszeadas muvelete osszesen": stat_szamok.statisztika_osszeadas,
+        "Osszeadas eredmenye(i)": stat_szamok.osszeadas_kijott_eredmenyek,
+        "Osszeadasnal megadott elso ertek(ek)": stat_szamok.osszead_elso_ertek,
+        "Osszeadasnal megadott masodik ertek(ek)": stat_szamok.osszeadas_masodik_ertek,
+        "Kivonas muvelete osszesen": stat_szamok.statisztika_kivonas,
+        "Kivonas eredmenye(i)": stat_szamok.kivonas_kijott_eredmenyek,
+        "Kivonasnal megadott elso ertek(ek)": stat_szamok.kivonas_elso_ertek,
+        "Kivonasnal megadott masodik ertek(ek)": stat_szamok.kivonas_masodik_ertek,
+        "Osztas muvelete osszesen": stat_szamok.statisztika_osztas,
+        "Osztas eredmenye(i)": stat_szamok.osztas_kijott_eredmenyek,
+        "Osztasnal megadott elso ertek(ek)": stat_szamok.osztas_elso_ertek,
+        "Osztasnal megadott masodik ertek(ek)": stat_szamok.osztas_masodik_ertek,
+        "Szorzas muvelete osszesen": stat_szamok.statisztika_szorzas,
+        "Szorzas eredmenye(i)": stat_szamok.szorzas_kijott_eredmenyek,
+        "Szorzasnal megadott elso ertek(ek)": stat_szamok.szorzas_elso_ertek,
+        "Szorzasnal megadott masodik ertek(ek)": stat_szamok.szorzas_masodik_ertek,
+        "Osszes paros szam": stat_szamok.paros_szamok,
+        "Osszes paratlan szam": stat_szamok.paratlan_szamok,
+        "Tiznel nagyobb szamok": stat_szamok.tiznel_nagyobb_szamok
     })
 
 # </editor-fold>
@@ -185,69 +185,69 @@ szamologepAdatok = ET.Element('szamolasi_statisztika')
 osszeadasElem = ET.SubElement(szamologepAdatok, 'osszeadas_statisztika')
 elem1 = ET.SubElement(osszeadasElem, 'Adat1')
 elem1.set('osszesen_elvegzett_osszeadas', 'elem1')
-elem1.text = str(stat_adatok.statisztika_osszeadas)
+elem1.text = str(stat_szamok.statisztika_osszeadas)
 elem2 = ET.SubElement(osszeadasElem, 'Adat2')
 elem2.set('osszeadas_kijott_eredmenyek', 'elem2')
-elem2.text = str(stat_adatok.osszeadas_kijott_eredmenyek)
+elem2.text = str(stat_szamok.osszeadas_kijott_eredmenyek)
 elem3 = ET.SubElement(osszeadasElem, 'Adat3')
 elem3.set('osszeadas_elso_ertekek', 'elem3')
-elem3.text = str(stat_adatok.osszead_elso_ertek)
+elem3.text = str(stat_szamok.osszead_elso_ertek)
 elem4 = ET.SubElement(osszeadasElem, 'Adat4')
 elem4.set('osszeadas_masodik_ertekek', 'elem4')
-elem4.text = str(stat_adatok.osszeadas_masodik_ertek)
+elem4.text = str(stat_szamok.osszeadas_masodik_ertek)
 
 kivonasElem = ET.SubElement(szamologepAdatok, 'kivonas_statisztika')
 elem5 = ET.SubElement(kivonasElem, 'Adat5')
 elem5.set('osszesen_elvegzett_kivonas', 'elem5')
-elem5.text = str(statisztika_kivonas)
+elem5.text = str(stat_szamok.statisztika_kivonas)
 elem6 = ET.SubElement(kivonasElem, 'Adat6')
 elem6.set('kivonas_kijott_eredmenyek', 'elem6')
-elem6.text = str(kivonas_kijott_eredmenyek)
+elem6.text = str(stat_szamok.kivonas_kijott_eredmenyek)
 elem7 = ET.SubElement(kivonasElem, 'Adat7')
 elem7.set('kivonas_elso_ertekek', 'elem7')
-elem7.text = str(kivonas_elso_ertek)
+elem7.text = str(stat_szamok.kivonas_elso_ertek)
 elem8 = ET.SubElement(kivonasElem, 'Adat8')
 elem8.set('kivonas_masodik_ertekek', 'elem8')
-elem8.text = str(kivonas_masodik_ertek)
+elem8.text = str(stat_szamok.kivonas_masodik_ertek)
 
 osztasElem = ET.SubElement(szamologepAdatok, 'osztas_statisztika')
 elem9 = ET.SubElement(osztasElem, 'Adat9')
 elem9.set('osszesen_elvegzett_osztas', 'elem9')
-elem9.text = str(statisztika_osztas)
+elem9.text = str(stat_szamok.statisztika_osztas)
 elem10 = ET.SubElement(osztasElem, 'Adat10')
 elem10.set('osztas_kijott_eredmenyek', 'elem10')
-elem10.text = str(osztas_kijott_eredmenyek)
+elem10.text = str(stat_szamok.osztas_kijott_eredmenyek)
 elem11 = ET.SubElement(osztasElem, 'Adat11')
 elem11.set('osztas_elso_ertekek', 'elem11')
-elem11.text = str(osztas_elso_ertek)
+elem11.text = str(stat_szamok.osztas_elso_ertek)
 elem12 = ET.SubElement(osztasElem, 'Adat12')
 elem12.set('oszztas_masodik_ertekek', 'elem12')
-elem12.text = str(osztas_masodik_ertek)
+elem12.text = str(stat_szamok.osztas_masodik_ertek)
 
 szorzasElem = ET.SubElement(szamologepAdatok, 'szorzas_statisztika')
 elem13 = ET.SubElement(szorzasElem, 'Adat13')
 elem13.set('osszesen_elvegzett_szorzas', 'elem13')
-elem13.text = str(statisztika_szorzas)
+elem13.text = str(stat_szamok.statisztika_szorzas)
 elem14 = ET.SubElement(szorzasElem, 'Adat14')
 elem14.set('szorzas_kijott_eredmenyek', 'elem14')
-elem14.text = str(szorzas_kijott_eredmenyek)
+elem14.text = str(stat_szamok.szorzas_kijott_eredmenyek)
 elem15 = ET.SubElement(szorzasElem, 'Adat15')
 elem15.set('szorzas_elso_ertekek', 'elem15')
-elem15.text = str(szorzas_elso_ertek)
+elem15.text = str(stat_szamok.szorzas_elso_ertek)
 elem16 = ET.SubElement(szorzasElem, 'Adat16')
 elem16.set('szorzas_masodik_ertekek', 'elem16')
-elem16.text = str(szorzas_masodik_ertek)
+elem16.text = str(stat_szamok.szorzas_masodik_ertek)
 
 egyebElem = ET.SubElement(szamologepAdatok, 'egyeb_statisztika')
 elem17 = ET.SubElement(egyebElem, 'Adat17')
 elem17.set('paros_szamok', 'elem17')
-elem17.text = str(paros_szamok)
+elem17.text = str(stat_szamok.paros_szamok)
 elem18 = ET.SubElement(egyebElem, 'Adat18')
 elem18.set('paratlan_szamok', 'elem18')
-elem18.text = str(paratlan_szamok)
+elem18.text = str(stat_szamok.paratlan_szamok)
 elem19 = ET.SubElement(egyebElem, 'Adat19')
 elem19.set('tiznelnagyobbak', 'elem19')
-elem19.text = str(tiznel_nagyobb_szamok)
+elem19.text = str(stat_szamok.tiznel_nagyobb_szamok)
 
 # Az összekészített struktúrát xml fájlba tesszük
 adataink = ET.tostring(szamologepAdatok, encoding="unicode")
@@ -261,25 +261,25 @@ fajl.close()
 szamologep = {}
 szamologep['szamologepStatisztika'] = []
 szamologep['szamologepStatisztika'].append({
-    'osszes': "Osszeadas muvelete osszesen: " + str(stat_adatok.statisztika_osszeadas),
-    'eredmeny': "Osszeadas eredmenye(i): " + str(stat_adatok.osszeadas_kijott_eredmenyek),
-    'elsoertek': "Osszeadasnal megadott elso ertek(ek): " + str(stat_adatok.osszead_elso_ertek),
-    'masodikertek': "Osszeadasnal megadott masodik ertek(ek): " + str(stat_adatok.osszeadas_masodik_ertek),
-    'osszes1': "Kivonas muvelete osszesen: " + str(statisztika_kivonas),
-    'eredmeny1': "Kivonas eredmenye(i): " + str(kivonas_kijott_eredmenyek),
-    'elsoertek1': "Kivonasnal megadott elso ertek(ek): " + str(kivonas_elso_ertek),
-    'masodikertek1': "Kivonasnal megadott masodik ertek(ek)" + str(kivonas_masodik_ertek),
-    'osszes2': "Osztas muvelete osszesen: " + str(statisztika_osztas),
-    'eredmeny2': "Osztas eredmenye(i): " + str(osztas_kijott_eredmenyek),
-    'elsoertek2': "Osztasnal megadott elso ertek(ek): " + str(osztas_elso_ertek),
-    'masodikertek2': "Osztasnal megadott masodik ertek(ek): " + str(osztas_masodik_ertek),
-    'osszes3': "Szorzas muvelete osszesen: " + str(statisztika_szorzas),
-    'eredmeny3': "Szorzas eredmenye(i): " + str(szorzas_kijott_eredmenyek),
-    'elsoertek3': "Szorzasnal megadott elso ertek(ek): " + str(szorzas_elso_ertek),
-    'masodikertek3': "Szorzasnal megadott masodik ertek(ek): " + str(szorzas_masodik_ertek),
-    'paros': "Osszes paros szam: " + str(paros_szamok),
-    'paratlan': "Osszes paratlan szam: " + str(paratlan_szamok),
-    'tiznelnagyobb': "Tiznel nagyobb szamok: " + str(tiznel_nagyobb_szamok)
+    'osszes': "Osszeadas muvelete osszesen: " + str(stat_szamok.statisztika_osszeadas),
+    'eredmeny': "Osszeadas eredmenye(i): " + str(stat_szamok.osszeadas_kijott_eredmenyek),
+    'elsoertek': "Osszeadasnal megadott elso ertek(ek): " + str(stat_szamok.osszead_elso_ertek),
+    'masodikertek': "Osszeadasnal megadott masodik ertek(ek): " + str(stat_szamok.osszeadas_masodik_ertek),
+    'osszes1': "Kivonas muvelete osszesen: " + str(stat_szamok.statisztika_kivonas),
+    'eredmeny1': "Kivonas eredmenye(i): " + str(stat_szamok.kivonas_kijott_eredmenyek),
+    'elsoertek1': "Kivonasnal megadott elso ertek(ek): " + str(stat_szamok.kivonas_elso_ertek),
+    'masodikertek1': "Kivonasnal megadott masodik ertek(ek)" + str(stat_szamok.kivonas_masodik_ertek),
+    'osszes2': "Osztas muvelete osszesen: " + str(stat_szamok.statisztika_osztas),
+    'eredmeny2': "Osztas eredmenye(i): " + str(stat_szamok.osztas_kijott_eredmenyek),
+    'elsoertek2': "Osztasnal megadott elso ertek(ek): " + str(stat_szamok.osztas_elso_ertek),
+    'masodikertek2': "Osztasnal megadott masodik ertek(ek): " + str(stat_szamok.osztas_masodik_ertek),
+    'osszes3': "Szorzas muvelete osszesen: " + str(stat_szamok.statisztika_szorzas),
+    'eredmeny3': "Szorzas eredmenye(i): " + str(stat_szamok.szorzas_kijott_eredmenyek),
+    'elsoertek3': "Szorzasnal megadott elso ertek(ek): " + str(stat_szamok.szorzas_elso_ertek),
+    'masodikertek3': "Szorzasnal megadott masodik ertek(ek): " + str(stat_szamok.szorzas_masodik_ertek),
+    'paros': "Osszes paros szam: " + str(stat_szamok.paros_szamok),
+    'paratlan': "Osszes paratlan szam: " + str(stat_szamok.paratlan_szamok),
+    'tiznelnagyobb': "Tiznel nagyobb szamok: " + str(stat_szamok.tiznel_nagyobb_szamok)
 })
 
 with open("szamologep.json", "w", encoding="utf-8") as fajl:
@@ -290,29 +290,29 @@ with open("szamologep.json", "w", encoding="utf-8") as fajl:
 # <editor-fold desc="PICKLE">
 fajl = open('szamologep.pickle', 'wb')
 ###
-pickle.dump(stat_adatok.statisztika_osszeadas, fajl)
-pickle.dump(stat_adatok.osszeadas_kijott_eredmenyek, fajl)
-pickle.dump(stat_adatok.osszead_elso_ertek, fajl)
-pickle.dump(stat_adatok.osszeadas_masodik_ertek, fajl)
+pickle.dump(stat_szamok.statisztika_osszeadas, fajl)
+pickle.dump(stat_szamok.osszeadas_kijott_eredmenyek, fajl)
+pickle.dump(stat_szamok.osszead_elso_ertek, fajl)
+pickle.dump(stat_szamok.osszeadas_masodik_ertek, fajl)
 ###
-pickle.dump(statisztika_kivonas, fajl)
-pickle.dump(kivonas_kijott_eredmenyek, fajl)
-pickle.dump(kivonas_elso_ertek, fajl)
-pickle.dump(kivonas_masodik_ertek, fajl)
+pickle.dump(stat_szamok.statisztika_kivonas, fajl)
+pickle.dump(stat_szamok.kivonas_kijott_eredmenyek, fajl)
+pickle.dump(stat_szamok.kivonas_elso_ertek, fajl)
+pickle.dump(stat_szamok.kivonas_masodik_ertek, fajl)
 ###
-pickle.dump(statisztika_osztas, fajl)
-pickle.dump(osztas_kijott_eredmenyek, fajl)
-pickle.dump(osztas_elso_ertek, fajl)
-pickle.dump(osztas_masodik_ertek, fajl)
+pickle.dump(stat_szamok.statisztika_osztas, fajl)
+pickle.dump(stat_szamok.osztas_kijott_eredmenyek, fajl)
+pickle.dump(stat_szamok.osztas_elso_ertek, fajl)
+pickle.dump(stat_szamok.osztas_masodik_ertek, fajl)
 ###
-pickle.dump(statisztika_szorzas, fajl)
-pickle.dump(szorzas_kijott_eredmenyek, fajl)
-pickle.dump(szorzas_elso_ertek, fajl)
-pickle.dump(szorzas_masodik_ertek, fajl)
+pickle.dump(stat_szamok.statisztika_szorzas, fajl)
+pickle.dump(stat_szamok.szorzas_kijott_eredmenyek, fajl)
+pickle.dump(stat_szamok.szorzas_elso_ertek, fajl)
+pickle.dump(stat_szamok.szorzas_masodik_ertek, fajl)
 ###
-pickle.dump(paros_szamok, fajl)
-pickle.dump(paratlan_szamok, fajl)
-pickle.dump(tiznel_nagyobb_szamok, fajl)
+pickle.dump(stat_szamok.paros_szamok, fajl)
+pickle.dump(stat_szamok.paratlan_szamok, fajl)
+pickle.dump(stat_szamok.tiznel_nagyobb_szamok, fajl)
 ###
 fajl.close()
 
@@ -349,33 +349,33 @@ olvas.close()
 # <editor-fold desc="SHELVE">
 s = shelve.open("szamologep.dat")
 s["osszeadas_ertekek"] = [
-    stat_adatok.statisztika_osszeadas,
-    stat_adatok.osszeadas_kijott_eredmenyek,
-    stat_adatok.osszead_elso_ertek,
-    stat_adatok.osszeadas_masodik_ertek
+    stat_szamok.statisztika_osszeadas,
+    stat_szamok.osszeadas_kijott_eredmenyek,
+    stat_szamok.osszead_elso_ertek,
+    stat_szamok.osszeadas_masodik_ertek
 ]
 s["kivonas_ertekek"] = [
-    statisztika_kivonas,
-    kivonas_kijott_eredmenyek,
-    kivonas_elso_ertek,
-    kivonas_masodik_ertek
+    stat_szamok.statisztika_kivonas,
+    stat_szamok.kivonas_kijott_eredmenyek,
+    stat_szamok.kivonas_elso_ertek,
+    stat_szamok.kivonas_masodik_ertek
 ]
 s["osztas_ertekek"] = [
-    statisztika_osztas,
-    osztas_kijott_eredmenyek,
-    osztas_elso_ertek,
-    osztas_masodik_ertek
+    stat_szamok.statisztika_osztas,
+    stat_szamok.osztas_kijott_eredmenyek,
+    stat_szamok.osztas_elso_ertek,
+    stat_szamok.osztas_masodik_ertek
 ]
 s["szorzas_ertekek"] = [
-    statisztika_szorzas,
-    szorzas_kijott_eredmenyek,
-    szorzas_elso_ertek,
-    szorzas_masodik_ertek
+    stat_szamok.statisztika_szorzas,
+    stat_szamok.szorzas_kijott_eredmenyek,
+    stat_szamok.szorzas_elso_ertek,
+    stat_szamok.szorzas_masodik_ertek
 ]
 s["egyeb_ertekek"] = [
-    paros_szamok,
-    paratlan_szamok,
-    tiznel_nagyobb_szamok
+    stat_szamok.paros_szamok,
+    stat_szamok.paratlan_szamok,
+    stat_szamok.tiznel_nagyobb_szamok
 ]
 s.close()
 
