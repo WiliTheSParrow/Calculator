@@ -2,13 +2,47 @@
 # |   HAZI FELADAT   |
 #   -----------------
 
-# Számológépet felosztani funkciókra, és metódusokra.
-
 from csv import DictWriter, DictReader
 import xml.etree.ElementTree as ET
 import json
 import pickle
 import shelve
+
+
+class Szamolas:
+
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+
+    def osszeadas_muvelete(a, b):
+        osszeadas = a + b
+        osszeadas_kijott_eredmenyek.append(osszeadas)
+        osszead_elso_ertek.append(a)
+        osszeadas_masodik_ertek.append(b)
+        print(str(a), ' + ', str(b), ' = ', str(osszeadas))
+
+    def kivonas_muvelete(a, b):
+        kivonas = a - b
+        kivonas_kijott_eredmenyek.append(kivonas)
+        kivonas_elso_ertek.append(a)
+        kivonas_masodik_ertek.append(b)
+        print(str(a), ' - ', str(b), ' = ', str(kivonas))
+
+    def osztas_muvelete(a, b):
+        osztas = a / b
+        osztas_kijott_eredmenyek.append(osztas)
+        osztas_elso_ertek.append(a)
+        osztas_masodik_ertek.append(b)
+        print(str(a), ' / ', str(b), ' = ', str(osztas))
+
+    def szorzas_muvelete(a, b):
+        szorzas = a * b
+        szorzas_kijott_eredmenyek.append(szorzas)
+        szorzas_elso_ertek.append(a)
+        szorzas_masodik_ertek.append(b)
+        print(str(a), ' * ', str(b), ' = ', str(szorzas))
+
 
 # <editor-fold desc="Kezdeti ertekek beallitasa a statisztikahoz">
 statisztika_osszeadas = 0
@@ -35,40 +69,6 @@ paros_szamok = 0
 paratlan_szamok = 0
 tiznel_nagyobb_szamok = 0
 
-
-# </editor-fold>
-
-# <editor-fold desc="Fuggvenyek definialasa">
-def osszeadasMuvelete(a, b):
-    osszeadas = a + b
-    osszeadas_kijott_eredmenyek.append(osszeadas)
-    osszead_elso_ertek.append(a)
-    osszeadas_masodik_ertek.append(b)
-    print(str(a), ' + ', str(b), ' = ', str(osszeadas))
-
-
-def kivonasMuvelete(a, b):
-    kivonas = a - b
-    kivonas_kijott_eredmenyek.append(kivonas)
-    kivonas_elso_ertek.append(a)
-    kivonas_masodik_ertek.append(b)
-    print(str(a), ' - ', str(b), ' = ', str(kivonas))
-
-
-def osztasMuvelete(a, b):
-    osztas = a / b
-    osztas_kijott_eredmenyek.append(osztas)
-    osztas_elso_ertek.append(a)
-    osztas_masodik_ertek.append(b)
-    print(str(a), ' / ', str(b), ' = ', str(osztas))
-
-
-def szorzasMuvelete(a, b):
-    szorzas = a * b
-    szorzas_kijott_eredmenyek.append(szorzas)
-    szorzas_elso_ertek.append(a)
-    szorzas_masodik_ertek.append(b)
-    print(str(a), ' * ', str(b), ' = ', str(szorzas))
 # </editor-fold>
 
 # <editor-fold desc="A szamologep">
@@ -80,26 +80,29 @@ while kerdes == 'igen':  # A ciklus addig fut le, amig igenekkel valaszol a felh
 
     # Bekerjük a szamokat es a muveletet a felhasznalotol, amikkel szeretne dolgozni:
     muvelet_bekerese = input("Kerem adjon meg egy muveletet (+ / - / / / *): ")
-    a = int(input("Kerem adja meg az elso erteket: "))
-    b = int(input("Kerem adja meg a masodik erteket: "))
+    megadott_szamok = Szamolas(a=int(input("Kerem adja meg az elso erteket: ")), b=int(input("Kerem adja meg a masodik erteket: ")))
 
     if muvelet_bekerese == '+':
-        osszeadasMuvelete(a, b)
+        osszeadogatok = Szamolas
+        osszeadogatok.osszeadas_muvelete(megadott_szamok.a, megadott_szamok.b)
         statisztika_osszeadas += 1
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '-':
-        kivonasMuvelete(a, b)
+        kivonogatok = Szamolas
+        kivonogatok.kivonas_muvelete(megadott_szamok.a, megadott_szamok.b)
         statisztika_kivonas += 1
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '/':
-        osztasMuvelete(a, b)
+        osztogatok = Szamolas
+        osztogatok.osztas_muvelete(megadott_szamok.a, megadott_szamok.b)
         statisztika_osztas += 1
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '*':
-        szorzasMuvelete(a, b)
+        szorozgatok = Szamolas
+        szorozgatok.szorzas_muvelete(megadott_szamok.a, megadott_szamok.b)
         statisztika_szorzas += 1
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
