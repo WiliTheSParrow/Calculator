@@ -11,15 +11,21 @@ import shelve
 
 class Szamolas:
 
+    statisztika_osszeadas = 0
+    osszeadas_kijott_eredmenyek = []
+    osszead_elso_ertek = []
+    osszeadas_masodik_ertek = []
+
     def __init__(self, a, b):
         self.a = a
         self.b = b
 
-    def osszeadas_muvelete(a, b):
+    def osszeadas_muvelete(a, b, osszeadas_kijott_eredmenyek, osszead_elso_ertek, osszeadas_masodik_ertek, statisztika_osszeadas):
         osszeadas = a + b
         osszeadas_kijott_eredmenyek.append(osszeadas)
         osszead_elso_ertek.append(a)
         osszeadas_masodik_ertek.append(b)
+        statisztika_osszeadas += 1
         print(str(a), ' + ', str(b), ' = ', str(osszeadas))
 
     def kivonas_muvelete(a, b):
@@ -44,11 +50,8 @@ class Szamolas:
         print(str(a), ' * ', str(b), ' = ', str(szorzas))
 
 
+
 # <editor-fold desc="Kezdeti ertekek beallitasa a statisztikahoz">
-statisztika_osszeadas = 0
-osszeadas_kijott_eredmenyek = []
-osszead_elso_ertek = []
-osszeadas_masodik_ertek = []
 
 statisztika_kivonas = 0
 kivonas_kijott_eredmenyek = []
@@ -85,7 +88,7 @@ while kerdes == 'igen':  # A ciklus addig fut le, amig igenekkel valaszol a felh
     if muvelet_bekerese == '+':
         osszeadogatok = Szamolas
         osszeadogatok.osszeadas_muvelete(megadott_szamok.a, megadott_szamok.b)
-        statisztika_osszeadas += 1
+
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '-':
@@ -111,7 +114,8 @@ kerdes2 = input("Szeretne a statisztikai adatokat megjeleniteni (Igen/Nem)? ").l
 # </editor-fold>
 
 # <editor-fold desc="Eredmenyek ertekelese">
-eredmenyek_omlesztve = osszeadas_kijott_eredmenyek + kivonas_kijott_eredmenyek + osztas_kijott_eredmenyek + szorzas_kijott_eredmenyek
+stat_osszeadogatok = Szamolas
+eredmenyek_omlesztve = stat_osszeadogatok.osszeadas_kijott_eredmenyek + kivonas_kijott_eredmenyek + osztas_kijott_eredmenyek + szorzas_kijott_eredmenyek
 
 for i in eredmenyek_omlesztve:  # Mennyi paros vagy paratlan szam volt.
     if i % 2 == 0:
@@ -125,6 +129,7 @@ for i in eredmenyek_omlesztve:  # Mennyi 10-nel nagyobb szam jott ki.
 # </editor-fold>
 
 # <editor-fold desc="Eredmenyek eltarolasa file-okba">
+stat_adatok = Szamolas
 # <editor-fold desc="CSV">
 with open('szamologep.csv', 'w', encoding='utf-8', newline='') as fajl:
     fejlec = [
@@ -151,10 +156,10 @@ with open('szamologep.csv', 'w', encoding='utf-8', newline='') as fajl:
     csvWriter = DictWriter(fajl, fieldnames=fejlec)
     csvWriter.writeheader()
     csvWriter.writerow({
-        "Osszeadas muvelete osszesen": statisztika_osszeadas,
-        "Osszeadas eredmenye(i)": osszeadas_kijott_eredmenyek,
-        "Osszeadasnal megadott elso ertek(ek)": osszead_elso_ertek,
-        "Osszeadasnal megadott masodik ertek(ek)": osszeadas_masodik_ertek,
+        "Osszeadas muvelete osszesen": stat_adatok.statisztika_osszeadas,
+        "Osszeadas eredmenye(i)": stat_adatok.osszeadas_kijott_eredmenyek,
+        "Osszeadasnal megadott elso ertek(ek)": stat_adatok.osszead_elso_ertek,
+        "Osszeadasnal megadott masodik ertek(ek)": stat_adatok.osszeadas_masodik_ertek,
         "Kivonas muvelete osszesen": statisztika_kivonas,
         "Kivonas eredmenye(i)": kivonas_kijott_eredmenyek,
         "Kivonasnal megadott elso ertek(ek)": kivonas_elso_ertek,
@@ -180,16 +185,16 @@ szamologepAdatok = ET.Element('szamolasi_statisztika')
 osszeadasElem = ET.SubElement(szamologepAdatok, 'osszeadas_statisztika')
 elem1 = ET.SubElement(osszeadasElem, 'Adat1')
 elem1.set('osszesen_elvegzett_osszeadas', 'elem1')
-elem1.text = str(statisztika_osszeadas)
+elem1.text = str(stat_adatok.statisztika_osszeadas)
 elem2 = ET.SubElement(osszeadasElem, 'Adat2')
 elem2.set('osszeadas_kijott_eredmenyek', 'elem2')
-elem2.text = str(osszeadas_kijott_eredmenyek)
+elem2.text = str(stat_adatok.osszeadas_kijott_eredmenyek)
 elem3 = ET.SubElement(osszeadasElem, 'Adat3')
 elem3.set('osszeadas_elso_ertekek', 'elem3')
-elem3.text = str(osszead_elso_ertek)
+elem3.text = str(stat_adatok.osszead_elso_ertek)
 elem4 = ET.SubElement(osszeadasElem, 'Adat4')
 elem4.set('osszeadas_masodik_ertekek', 'elem4')
-elem4.text = str(osszeadas_masodik_ertek)
+elem4.text = str(stat_adatok.osszeadas_masodik_ertek)
 
 kivonasElem = ET.SubElement(szamologepAdatok, 'kivonas_statisztika')
 elem5 = ET.SubElement(kivonasElem, 'Adat5')
@@ -256,10 +261,10 @@ fajl.close()
 szamologep = {}
 szamologep['szamologepStatisztika'] = []
 szamologep['szamologepStatisztika'].append({
-    'osszes': "Osszeadas muvelete osszesen: " + str(statisztika_osszeadas),
-    'eredmeny': "Osszeadas eredmenye(i): " + str(osszeadas_kijott_eredmenyek),
-    'elsoertek': "Osszeadasnal megadott elso ertek(ek): " + str(osszead_elso_ertek),
-    'masodikertek': "Osszeadasnal megadott masodik ertek(ek): " + str(osszeadas_masodik_ertek),
+    'osszes': "Osszeadas muvelete osszesen: " + str(stat_adatok.statisztika_osszeadas),
+    'eredmeny': "Osszeadas eredmenye(i): " + str(stat_adatok.osszeadas_kijott_eredmenyek),
+    'elsoertek': "Osszeadasnal megadott elso ertek(ek): " + str(stat_adatok.osszead_elso_ertek),
+    'masodikertek': "Osszeadasnal megadott masodik ertek(ek): " + str(stat_adatok.osszeadas_masodik_ertek),
     'osszes1': "Kivonas muvelete osszesen: " + str(statisztika_kivonas),
     'eredmeny1': "Kivonas eredmenye(i): " + str(kivonas_kijott_eredmenyek),
     'elsoertek1': "Kivonasnal megadott elso ertek(ek): " + str(kivonas_elso_ertek),
@@ -285,10 +290,10 @@ with open("szamologep.json", "w", encoding="utf-8") as fajl:
 # <editor-fold desc="PICKLE">
 fajl = open('szamologep.pickle', 'wb')
 ###
-pickle.dump(statisztika_osszeadas, fajl)
-pickle.dump(osszeadas_kijott_eredmenyek, fajl)
-pickle.dump(osszead_elso_ertek, fajl)
-pickle.dump(osszeadas_masodik_ertek, fajl)
+pickle.dump(stat_adatok.statisztika_osszeadas, fajl)
+pickle.dump(stat_adatok.osszeadas_kijott_eredmenyek, fajl)
+pickle.dump(stat_adatok.osszead_elso_ertek, fajl)
+pickle.dump(stat_adatok.osszeadas_masodik_ertek, fajl)
 ###
 pickle.dump(statisztika_kivonas, fajl)
 pickle.dump(kivonas_kijott_eredmenyek, fajl)
@@ -344,10 +349,10 @@ olvas.close()
 # <editor-fold desc="SHELVE">
 s = shelve.open("szamologep.dat")
 s["osszeadas_ertekek"] = [
-    statisztika_osszeadas,
-    osszeadas_kijott_eredmenyek,
-    osszead_elso_ertek,
-    osszeadas_masodik_ertek
+    stat_adatok.statisztika_osszeadas,
+    stat_adatok.osszeadas_kijott_eredmenyek,
+    stat_adatok.osszead_elso_ertek,
+    stat_adatok.osszeadas_masodik_ertek
 ]
 s["kivonas_ertekek"] = [
     statisztika_kivonas,
@@ -527,7 +532,7 @@ if kerdes2 == 'igen':
     print("Osztas masodik ertek(ek): " + str(o["osztas_ertekek"][3]))
     ###
     print("Szorzas muvelet(ei): " + str(o["szorzas_ertekek"][0]) + "db")
-    print("Szorzas kijott eredmeny(ek): " + str(o["szorzas_ertekek"][1]) + "db")
+    print("Szorzas kijott eredmeny(ek): " + str(o["szorzas_ertekek"][1]))
     print("Szorzas elso ertek(ek): " + str(o["szorzas_ertekek"][2]))
     print("Szorzas masodik ertek(ek): " + str(o["szorzas_ertekek"][3]))
     ###
