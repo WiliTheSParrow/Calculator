@@ -38,38 +38,36 @@ class Szamolas:
         self.a = a
         self.b = b
 
-    def osszeadas_muvelete(a, b, osszeadas_kijott_eredmenyek, osszead_elso_ertek, osszeadas_masodik_ertek,
-                           statisztika_osszeadas):
+    def osszeadas_muvelete(a, b, osszeadas_kijott_eredmenyek, osszead_elso_ertek, osszeadas_masodik_ertek):
         osszeadas = a + b
         osszeadas_kijott_eredmenyek.append(osszeadas)
         osszead_elso_ertek.append(a)
         osszeadas_masodik_ertek.append(b)
-        statisztika_osszeadas += 1
+
         print(str(a), ' + ', str(b), ' = ', str(osszeadas))
 
-    def kivonas_muvelete(a, b, kivonas_kijott_eredmenyek, kivonas_elso_ertek, kivonas_masodik_ertek,
-                         statisztika_kivonas):
+    def kivonas_muvelete(a, b, kivonas_kijott_eredmenyek, kivonas_elso_ertek, kivonas_masodik_ertek):
         kivonas = a - b
         kivonas_kijott_eredmenyek.append(kivonas)
         kivonas_elso_ertek.append(a)
         kivonas_masodik_ertek.append(b)
-        statisztika_kivonas += 1
+
         print(str(a), ' - ', str(b), ' = ', str(kivonas))
 
-    def osztas_muvelete(a, b, osztas_kijott_eredmenyek, osztas_elso_ertek, osztas_masodik_ertek, statisztika_osztas):
+    def osztas_muvelete(a, b, osztas_kijott_eredmenyek, osztas_elso_ertek, osztas_masodik_ertek):
         osztas = a / b
         osztas_kijott_eredmenyek.append(osztas)
         osztas_elso_ertek.append(a)
         osztas_masodik_ertek.append(b)
-        statisztika_osztas += 1
+
         print(str(a), ' / ', str(b), ' = ', str(osztas))
 
-    def szorzas_muvelete(a, b, szorzas_kijott_eredmenyek, szorzas_elso_ertek, szorzas_masodik_ertek, statisztika_szorzas):
+    def szorzas_muvelete(a, b, szorzas_kijott_eredmenyek, szorzas_elso_ertek, szorzas_masodik_ertek):
         szorzas = a * b
         szorzas_kijott_eredmenyek.append(szorzas)
         szorzas_elso_ertek.append(a)
         szorzas_masodik_ertek.append(b)
-        statisztika_szorzas += 1
+
         print(str(a), ' * ', str(b), ' = ', str(szorzas))
 
 
@@ -87,26 +85,36 @@ while kerdes == 'igen':  # A ciklus addig fut le, amig igenekkel valaszol a felh
 
     if muvelet_bekerese == '+':
         osszeadogatok = Szamolas
-        osszeadogatok.osszeadas_muvelete(megadott_szamok.a, megadott_szamok.b)
+        osszeadogatok.osszeadas_muvelete(megadott_szamok.a, megadott_szamok.b,
+                                         megadott_szamok.osszeadas_kijott_eredmenyek,
+                                         megadott_szamok.osszead_elso_ertek, megadott_szamok.osszeadas_masodik_ertek,
+                                         )
+        osszeadogatok.statisztika_osszeadas += 1
 
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '-':
         kivonogatok = Szamolas
-        kivonogatok.kivonas_muvelete(megadott_szamok.a, megadott_szamok.b)
-
+        kivonogatok.kivonas_muvelete(megadott_szamok.a, megadott_szamok.b, megadott_szamok.kivonas_kijott_eredmenyek,
+                                     megadott_szamok.kivonas_elso_ertek, megadott_szamok.kivonas_masodik_ertek,
+                                     )
+        kivonogatok.statisztika_kivonas += 1
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '/':
         osztogatok = Szamolas
-        osztogatok.osztas_muvelete(megadott_szamok.a, megadott_szamok.b)
-
+        osztogatok.osztas_muvelete(megadott_szamok.a, megadott_szamok.b, megadott_szamok.osztas_kijott_eredmenyek,
+                                   megadott_szamok.osztas_elso_ertek, megadott_szamok.osztas_masodik_ertek,
+                                   )
+        osztogatok.statisztika_osztas += 1
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
     elif muvelet_bekerese == '*':
         szorozgatok = Szamolas
-        szorozgatok.szorzas_muvelete(megadott_szamok.a, megadott_szamok.b)
-
+        szorozgatok.szorzas_muvelete(megadott_szamok.a, megadott_szamok.b, megadott_szamok.szorzas_kijott_eredmenyek,
+                                     megadott_szamok.szorzas_elso_ertek, megadott_szamok.szorzas_masodik_ertek,
+                                     )
+        szorozgatok.statisztika_szorzas += 1
         kerdes = input("Szeretne meg szamolasokat vegezni (Igen/Nem)? ").lower()
 
 kerdes2 = input("Szeretne a statisztikai adatokat megjeleniteni (Igen/Nem)? ").lower()
