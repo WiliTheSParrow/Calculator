@@ -30,10 +30,6 @@ class Szamolas:
     szorzas_elso_ertek = []
     szorzas_masodik_ertek = []
 
-    paros_szamok = 0
-    paratlan_szamok = 0
-    tiznel_nagyobb_szamok = 0
-
     def __init__(self, a, b):
         self.a = a
         self.b = b
@@ -69,6 +65,28 @@ class Szamolas:
         szorzas_masodik_ertek.append(b)
 
         print(str(a), ' * ', str(b), ' = ', str(szorzas))
+
+
+class Statisztika(Szamolas):
+    paros_szamok = 0
+    paratlan_szamok = 0
+    tiznel_nagyobb_szamok = 0
+
+    def __init__(self, osszeadas_kijott_eredmenyek, kivonas_kijott_eredmenyek, osztas_kijott_eredmenyek,
+                 szorzas_kijott_eredmenyek):
+        super().__init__()
+        self.eredmenyek_omlesztve = osszeadas_kijott_eredmenyek + kivonas_kijott_eredmenyek + osztas_kijott_eredmenyek + szorzas_kijott_eredmenyek
+
+    def statisztika(self, eredmenyek_omlesztve, paros_szamok, paratlan_szamok, tiznel_nagyobb_szamok):
+        for i in eredmenyek_omlesztve:  # Mennyi paros vagy paratlan szam volt.
+            if i % 2 == 0:
+                paros_szamok += 1
+            else:
+                paratlan_szamok += 1
+
+        for i in eredmenyek_omlesztve:  # Mennyi 10-nel nagyobb szam jott ki.
+            if i > 10:
+                tiznel_nagyobb_szamok += 1
 
 
 # <editor-fold desc="A szamologep">
@@ -121,20 +139,8 @@ kerdes2 = input("Szeretne a statisztikai adatokat megjeleniteni (Igen/Nem)? ").l
 
 # </editor-fold>
 
-# <editor-fold desc="Eredmenyek ertekelese">
 stat_szamok = Szamolas
-eredmenyek_omlesztve = stat_szamok.osszeadas_kijott_eredmenyek + stat_szamok.kivonas_kijott_eredmenyek + stat_szamok.osztas_kijott_eredmenyek + stat_szamok.szorzas_kijott_eredmenyek
-
-for i in eredmenyek_omlesztve:  # Mennyi paros vagy paratlan szam volt.
-    if i % 2 == 0:
-        stat_szamok.paros_szamok += 1
-    else:
-        stat_szamok.paratlan_szamok += 1
-
-for i in eredmenyek_omlesztve:  # Mennyi 10-nel nagyobb szam jott ki.
-    if i > 10:
-        stat_szamok.tiznel_nagyobb_szamok += 1
-# </editor-fold>
+stat_egyeb = Statisztika
 
 # <editor-fold desc="Eredmenyek eltarolasa file-okba">
 
@@ -180,9 +186,9 @@ with open('szamologep.csv', 'w', encoding='utf-8', newline='') as fajl:
         "Szorzas eredmenye(i)": stat_szamok.szorzas_kijott_eredmenyek,
         "Szorzasnal megadott elso ertek(ek)": stat_szamok.szorzas_elso_ertek,
         "Szorzasnal megadott masodik ertek(ek)": stat_szamok.szorzas_masodik_ertek,
-        "Osszes paros szam": stat_szamok.paros_szamok,
-        "Osszes paratlan szam": stat_szamok.paratlan_szamok,
-        "Tiznel nagyobb szamok": stat_szamok.tiznel_nagyobb_szamok
+        "Osszes paros szam": stat_egyeb.paros_szamok,
+        "Osszes paratlan szam": stat_egyeb.paratlan_szamok,
+        "Tiznel nagyobb szamok": stat_egyeb.tiznel_nagyobb_szamok
     })
 
 # </editor-fold>
@@ -249,13 +255,13 @@ elem16.text = str(stat_szamok.szorzas_masodik_ertek)
 egyebElem = ET.SubElement(szamologepAdatok, 'egyeb_statisztika')
 elem17 = ET.SubElement(egyebElem, 'Adat17')
 elem17.set('paros_szamok', 'elem17')
-elem17.text = str(stat_szamok.paros_szamok)
+elem17.text = str(stat_egyeb.paros_szamok)
 elem18 = ET.SubElement(egyebElem, 'Adat18')
 elem18.set('paratlan_szamok', 'elem18')
-elem18.text = str(stat_szamok.paratlan_szamok)
+elem18.text = str(stat_egyeb.paratlan_szamok)
 elem19 = ET.SubElement(egyebElem, 'Adat19')
 elem19.set('tiznelnagyobbak', 'elem19')
-elem19.text = str(stat_szamok.tiznel_nagyobb_szamok)
+elem19.text = str(stat_egyeb.tiznel_nagyobb_szamok)
 
 # Az összekészített struktúrát xml fájlba tesszük
 adataink = ET.tostring(szamologepAdatok, encoding="unicode")
@@ -285,9 +291,9 @@ szamologep['szamologepStatisztika'].append({
     'eredmeny3': "Szorzas eredmenye(i): " + str(stat_szamok.szorzas_kijott_eredmenyek),
     'elsoertek3': "Szorzasnal megadott elso ertek(ek): " + str(stat_szamok.szorzas_elso_ertek),
     'masodikertek3': "Szorzasnal megadott masodik ertek(ek): " + str(stat_szamok.szorzas_masodik_ertek),
-    'paros': "Osszes paros szam: " + str(stat_szamok.paros_szamok),
-    'paratlan': "Osszes paratlan szam: " + str(stat_szamok.paratlan_szamok),
-    'tiznelnagyobb': "Tiznel nagyobb szamok: " + str(stat_szamok.tiznel_nagyobb_szamok)
+    'paros': "Osszes paros szam: " + str(stat_egyeb.paros_szamok),
+    'paratlan': "Osszes paratlan szam: " + str(stat_egyeb.paratlan_szamok),
+    'tiznelnagyobb': "Tiznel nagyobb szamok: " + str(stat_egyeb.tiznel_nagyobb_szamok)
 })
 
 with open("szamologep.json", "w", encoding="utf-8") as fajl:
@@ -318,9 +324,9 @@ pickle.dump(stat_szamok.szorzas_kijott_eredmenyek, fajl)
 pickle.dump(stat_szamok.szorzas_elso_ertek, fajl)
 pickle.dump(stat_szamok.szorzas_masodik_ertek, fajl)
 ###
-pickle.dump(stat_szamok.paros_szamok, fajl)
-pickle.dump(stat_szamok.paratlan_szamok, fajl)
-pickle.dump(stat_szamok.tiznel_nagyobb_szamok, fajl)
+pickle.dump(stat_egyeb.paros_szamok, fajl)
+pickle.dump(stat_egyeb.paratlan_szamok, fajl)
+pickle.dump(stat_egyeb.tiznel_nagyobb_szamok, fajl)
 ###
 fajl.close()
 
@@ -381,9 +387,9 @@ s["szorzas_ertekek"] = [
     stat_szamok.szorzas_masodik_ertek
 ]
 s["egyeb_ertekek"] = [
-    stat_szamok.paros_szamok,
-    stat_szamok.paratlan_szamok,
-    stat_szamok.tiznel_nagyobb_szamok
+    stat_egyeb.paros_szamok,
+    stat_egyeb.paratlan_szamok,
+    stat_egyeb.tiznel_nagyobb_szamok
 ]
 s.close()
 
